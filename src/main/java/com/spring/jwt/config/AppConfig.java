@@ -140,6 +140,8 @@ public class AppConfig {
                 .requestMatchers("/colors/**").permitAll() 
                 .requestMatchers("/b2b/**").permitAll()
                 .requestMatchers("/b2bConfirm/**").permitAll()
+                .requestMatchers("/premiumCars/**").permitAll()
+                .requestMatchers("/PremiumCarUploadFile/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationManager(manager)
@@ -165,7 +167,7 @@ public class AppConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
 
-                config.setAllowedOrigins(Arrays.asList("https://caryanamindia.com","https://www.caryanamindia.com", "http://localhost:5173","https://localhost","https://localhost:3000","http://localhost:8081"));
+                config.setAllowedOrigins(Arrays.asList("https://caryanamindia.com","https://www.caryanamindia.com", "http://localhost:5173","https://localhost/**","https://localhost:3000","http://localhost:8081"));
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Collections.singletonList("*"));
