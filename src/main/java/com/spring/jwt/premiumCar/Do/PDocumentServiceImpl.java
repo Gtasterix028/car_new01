@@ -6,6 +6,7 @@ import com.spring.jwt.premiumCar.PremiumCar;
 import com.spring.jwt.premiumCar.PremiumCarRepository;
 import com.spring.jwt.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public class PDocumentServiceImpl implements PremiumCarIDocument{
 
     private final PDocumentRepo documentRepo;
 
+    @Autowired
     private final PremiumCarRepository premiumCarRepository;
+
     @Override
     public String addDocumentp(PDocumentDto documentDto) {
         Optional<User> userDetails = userRepository.findById(documentDto.getUserId());

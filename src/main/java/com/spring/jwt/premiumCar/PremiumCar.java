@@ -4,10 +4,7 @@ import com.spring.jwt.entity.Status;
 import com.spring.jwt.premiumCar.PremiumCarPendingBooking.PremiumCarPendingBooking;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Getter
 @Entity
 @AllArgsConstructor
+
 @NoArgsConstructor
 @Table(name = "premiumCar")
 public class PremiumCar {

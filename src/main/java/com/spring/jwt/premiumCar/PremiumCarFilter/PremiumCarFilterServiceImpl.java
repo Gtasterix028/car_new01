@@ -1,39 +1,36 @@
-package com.spring.jwt.service;
+package com.spring.jwt.premiumCar.PremiumCarFilter;
 
-import com.spring.jwt.Interfaces.FilterService;
-import com.spring.jwt.dto.CarDto;
 import com.spring.jwt.dto.FilterDto;
-import com.spring.jwt.entity.Car;
 import com.spring.jwt.entity.Status;
 import com.spring.jwt.exception.CarNotFoundException;
 import com.spring.jwt.exception.PageNotFoundException;
-import com.spring.jwt.repository.CarRepo;
+import com.spring.jwt.premiumCar.PremiumCar;
+import com.spring.jwt.premiumCar.PremiumCarDto;
+import com.spring.jwt.premiumCar.PremiumCarRepository;
 import com.spring.jwt.repository.DealerRepository;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class FilterServiceImpl implements FilterService {
-
+public class PremiumCarFilterServiceImpl implements PremiumCarFilterService {
     @Autowired
-    private CarRepo carRepo;
-
+    private PremiumCarRepository carRepo;
     @Autowired
     private DealerRepository dealerRepo;
 
     @Override
-    public List<CarDto> searchByFilter(FilterDto filterDto) {
-        Specification<Car> spec = (root, query, criteriaBuilder) -> {
+    public List<PremiumCarDto> searchByFilter(FilterDto filterDto) {
+
+        Specification<PremiumCar> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (filterDto.getMinPrice() != null) {
@@ -73,25 +70,26 @@ public class FilterServiceImpl implements FilterService {
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-
-        List<Car> carList = carRepo.findAll(spec);
+        List<PremiumCar> carList = carRepo.findAll((Sort) spec);
         if (carList.isEmpty()) {
             throw new PageNotFoundException("Page Not found");
         }
 
-        List<CarDto> listOfCarDto = new ArrayList<>();
-        for (Car car : carList) {
-            CarDto carDto = new CarDto(car);
-            carDto.setCarId(car.getId());
+        List<PremiumCarDto> listOfCarDto = new ArrayList<>();
+        for (PremiumCar car : carList) {
+            PremiumCarDto carDto = new PremiumCarDto(car);
+            carDto.setPremiumCarId(car.getPremiumCarId());
             listOfCarDto.add(carDto);
         }
 
         return listOfCarDto;
     }
 
+
+
     @Override
-    public List<CarDto> searchByFilterPage(FilterDto filterDto, int pageNo, int pageSize) {
-        Specification<Car> spec = (root, query, criteriaBuilder) -> {
+    public List<PremiumCarDto> searchByFilterPage(FilterDto filterDto, int pageNo, int pageSize) {
+        Specification<PremiumCar> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (filterDto.getMinPrice() != null) {
@@ -134,49 +132,47 @@ public class FilterServiceImpl implements FilterService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize); // Convert to zero-based index for page number
 
-        Page<Car> carPage = carRepo.findAll(spec, pageable);
+        Page<PremiumCar> carPage = carRepo.findAll(spec, pageable);
         if (carPage.isEmpty()) {
             throw new PageNotFoundException("No cars found for the specified filter and page.");
         }
 
-        List<CarDto> listOfCarDto = carPage.stream()
-                .map(CarDto::new)
+        List<PremiumCarDto> listOfCarDto = carPage.stream()
+                .map(PremiumCarDto::new)
                 .toList();
 
         return listOfCarDto;
     }
 
 
-    public List<CarDto> getTop4Cars() {
+    @Override
+    public List<PremiumCarDto> getAllCarsWithPages(int PageNo,int pageSize) {
         // Fetch the top 4 cars based on their ID in descending order
-        List<Car> topCars = carRepo.findTop4ByOrderByIdDesc();
-        List<CarDto> carDtoList = new ArrayList<>();
+        List<PremiumCar> topCars = carRepo.findTop4ByOrderByPremiumCarIdDesc();
+        List<PremiumCarDto> carDtoList = new ArrayList<>();
 
         // Convert Car entities to CarDto
-        for (Car car : topCars) {
-            CarDto carDto = new CarDto(car);
-            carDto.setCarId(car.getId());
+        for (PremiumCar car : topCars) {
+            PremiumCarDto carDto = new PremiumCarDto(car);
+            carDto.setPremiumCarId(car.getPremiumCarId());
             carDtoList.add(carDto);
         }
 
         return carDtoList;
     }
 
-
-
-
     @Override
-    public List<CarDto> getAllCarsWithPages(int PageNo) {
-        List<Car> listOfCar = carRepo.getPendingAndActivateCar();
+    public List<PremiumCarDto> searchBarFilter(String searchBarInput , int PageNo ) {
+        List<PremiumCar> listOfCar = carRepo.getPendingAndActivateCar();
         System.err.println(listOfCar.size());
         CarNotFoundException carNotFoundException;
         if((PageNo*10)>listOfCar.size()-1){
             throw new PageNotFoundException("page not found");
 
         }
-        if(listOfCar.size()<=0){throw new CarNotFoundException("car not found",HttpStatus.NOT_FOUND);}
+        if(listOfCar.size()<=0){throw new CarNotFoundException("car not found", HttpStatus.NOT_FOUND);}
 //        System.out.println("list of de"+listOfCar.size());
-        List<CarDto> listOfCarDto = new ArrayList<>();
+        List<PremiumCarDto> listOfCarDto = new ArrayList<>();
 
         int pageStart=PageNo*10;
         int pageEnd=pageStart+10;
@@ -185,8 +181,8 @@ public class FilterServiceImpl implements FilterService {
 
             if(pageStart>listOfCar.size()){break;}
 
-            CarDto carDto = new CarDto(listOfCar.get(counter));
-            carDto.setCarId(listOfCar.get(counter).getId());
+            PremiumCarDto carDto = new PremiumCarDto(listOfCar.get(counter));
+            carDto.setPremiumCarId(listOfCar.get(counter).getPremiumCarId());
             listOfCarDto.add(carDto);
 
 //            System.out.println("*");
@@ -203,14 +199,15 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public List<CarDto> searchBarFilter(String searchBarInput) {
-        List<Car> cars = carRepo.searchCarsByKeyword(searchBarInput.toLowerCase());
+    public List<PremiumCarDto> getTop4Cars(String searchBarInput) {
+
+        List<PremiumCar> cars = carRepo.searchPremiumCarByKeyword(searchBarInput.toLowerCase());
         return cars.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    private CarDto convertToDto(Car car) {
-        CarDto carDto = new CarDto();
-        carDto.setCarId(car.getId());
+    private PremiumCarDto convertToDto(PremiumCar car) {
+        PremiumCarDto carDto = new PremiumCarDto();
+        carDto.setPremiumCarId(car.getPremiumCarId());
         carDto.setBrand(car.getBrand());
         carDto.setModel(car.getModel());
         carDto.setYear(car.getYear());
@@ -221,4 +218,5 @@ public class FilterServiceImpl implements FilterService {
 
         return carDto;
     }
-}
+    }
+
