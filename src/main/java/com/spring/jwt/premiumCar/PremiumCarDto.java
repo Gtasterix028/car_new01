@@ -4,6 +4,7 @@ import com.spring.jwt.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class PremiumCarDto{
 
     private Integer premiumCarId;
@@ -50,4 +52,8 @@ public class PremiumCarDto{
     private String carType;
 
     private Set<Long> premiumCarPendingBookingId; // Representing PendingBooking as just IDs for simplification
+
+
+    public PremiumCarDto(PremiumCar car) {
+    }
 }

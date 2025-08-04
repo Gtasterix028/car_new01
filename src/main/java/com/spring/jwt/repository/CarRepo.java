@@ -3,6 +3,7 @@ package com.spring.jwt.repository;
 
 import com.spring.jwt.entity.Car;
 import com.spring.jwt.entity.Status;
+import com.spring.jwt.premiumCar.PremiumCar;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,7 @@ public interface CarRepo extends JpaRepository<Car, Integer>, JpaSpecificationEx
 
 //    @Query("SELECT c FROM Car c WHERE c.dealerId = :dealerId AND c.carStatus = :status")
 //    List<Car> findCarsByDealerIdAndStatus(@Param("dealerId") int dealerId, @Param("status") String status);
+
 //    @Query("SELECT c FROM Car c WHERE dealerId = :dealerId and carStatus = 'pending'")
 //    @Query("SELECT c FROM Car c WHERE c.dealerId= :dealerId AND c.carStatus= :carStatus")
 
@@ -56,6 +58,9 @@ public interface CarRepo extends JpaRepository<Car, Integer>, JpaSpecificationEx
             "OR LOWER(c.fuelType) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(c.transmission) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Car> searchCarsByKeyword(@Param("keyword") String keyword);
+
+
+
 
     Page<Car> findByCarStatusInOrderByIdDesc(List<Status> statuses, Pageable pageable);
 

@@ -1,5 +1,6 @@
 package com.spring.jwt.dto;
 
+import com.spring.jwt.premiumCar.PremiumCarDto;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public class ResponseAllCarDto {
     private String message;
     private List<CarDto> list;
+    private List<PremiumCarDto> list1;
     private String exception;
     private long totalCars;
 
