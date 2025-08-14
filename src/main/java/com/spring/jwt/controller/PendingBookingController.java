@@ -25,8 +25,10 @@ import java.util.List;
 public class PendingBookingController {
     @Autowired
     private CarRepo carRepo;
+
     @Autowired
     private DealerRepository dealerRepository;
+
     @Autowired
     private PendingBookingService pendingBookingService;
 
@@ -160,7 +162,6 @@ public class PendingBookingController {
             List<PendingBookingDTO> listOfPendingBooking = pendingBookingService.getPendingBookingsByDealerId(pageNo,dealerId);
             AllPendingBookingResponseDTO allPendingBookingResponseDTO = new AllPendingBookingResponseDTO("success");
             allPendingBookingResponseDTO.setList(listOfPendingBooking);
-
             return ResponseEntity.status(HttpStatus.OK).body(allPendingBookingResponseDTO);
         } catch (BookingNotFoundException bookingNotFoundException) {
             ResponseAllPendingBookingDto responseAllPendingBookingDto = new ResponseAllPendingBookingDto("unsuccess");
@@ -177,6 +178,7 @@ public class PendingBookingController {
 
         }
     }
+
     @GetMapping("/getPendingBookingDetailsByCarID")
     public ResponseEntity<?> getBookingDetailsByCarId(@RequestParam int pageNo,@RequestParam int CarId) {
         try {

@@ -1,6 +1,7 @@
 package com.spring.jwt.premiumCar.PremiumCarPendingBooking;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.jwt.dto.PendingBookingDTO;
 import com.spring.jwt.entity.Status;
 import com.spring.jwt.premiumCar.PremiumCar;
 import jakarta.persistence.*;
@@ -43,4 +44,15 @@ public class PremiumCarPendingBooking {
     @JoinColumn(name = "premium_car_car_id")
     @JsonIgnore
     private PremiumCar premiumCarCar;
+
+    public PremiumCarPendingBooking(PremiunCarPendingBookingDto premiunCarPendingBookingDto) {
+        this.premiumCarPendingBookingId = premiumCarPendingBookingId;
+        this.date = date;
+        this.price = price;
+        this.dealerId = dealerId;
+        this.userId = userId;
+        this.status = status;
+        this.askingPrice = askingPrice;
+        this.premiumCarCar = premiumCarCar;
+    }
 }
