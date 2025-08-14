@@ -1,10 +1,5 @@
-package com.GTasteriX.demo.Service;
+package  com.spring.jwt.enquiry;
 
-import com.GTasteriX.demo.DTO.EnquiryDTO;
-import com.GTasteriX.demo.Entity.Enquiry;
-import com.GTasteriX.demo.Mapper.EnquiryMapper;
-import com.GTasteriX.demo.Repository.EnquiryRepo;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +43,7 @@ public class EnquiryServiceImpl implements EnquiryService{
                 .orElseThrow(() -> new RuntimeException("Enquiry not found with ID: " + id));
 
         // Update fields (manual or via mapper)
+        existingEnquiry.setEnquiryId(enquiryDTO.getEnquiryId());
         existingEnquiry.setName(enquiryDTO.getName());
         existingEnquiry.setEmail(enquiryDTO.getEmail());
         existingEnquiry.setAddress(enquiryDTO.getAddress());

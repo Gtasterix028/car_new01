@@ -1,9 +1,5 @@
-package com.GTasteriX.demo.Controller;
+package  com.spring.jwt.enquiry;
 
-import com.GTasteriX.demo.DTO.EnquiryDTO;
-import com.GTasteriX.demo.Entity.Enquiry;
-import com.GTasteriX.demo.Service.EnquiryService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,13 +1,12 @@
-package com.GTasteriX.demo.DTO;
+package  com.spring.jwt.enquiry;
 
-import com.GTasteriX.demo.Entity.Type;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -15,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 public class EnquiryDTO
 {
+    private Integer enquiryId;
     private String name;
     private String email;
     private Long mobileNumber;
@@ -24,6 +24,14 @@ public class EnquiryDTO
 
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    public Integer getEnquiryId() {
+        return enquiryId;
+    }
+
+    public void setEnquiryId(Integer enquiryId) {
+        this.enquiryId = enquiryId;
+    }
 
     public String getName() {
         return name;

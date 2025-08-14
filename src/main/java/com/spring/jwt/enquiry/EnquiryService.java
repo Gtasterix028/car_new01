@@ -1,7 +1,5 @@
-package com.GTasteriX.demo.Service;
+package  com.spring.jwt.enquiry;
 
-import com.GTasteriX.demo.DTO.EnquiryDTO;
-import com.GTasteriX.demo.Entity.Enquiry;
 
 import java.util.List;
 
