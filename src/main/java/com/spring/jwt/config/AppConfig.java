@@ -143,6 +143,7 @@ public class AppConfig {
                 .requestMatchers("/premiumCars/**").permitAll()
                 .requestMatchers("/PremiumCarUploadFile/**").permitAll()
                 .requestMatchers("/enquiry/**").permitAll()
+                .requestMatchers("/premiumBrands/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationManager(manager)
