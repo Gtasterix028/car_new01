@@ -1,4 +1,4 @@
-package com.GTasteriX.demo.Entity;
+package  com.spring.jwt.enquiry;
 
 public enum Type {
 

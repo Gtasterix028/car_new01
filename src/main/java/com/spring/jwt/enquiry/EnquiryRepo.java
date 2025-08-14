@@ -1,6 +1,6 @@
-package com.GTasteriX.demo.Repository;
+package  com.spring.jwt.enquiry;
 
-import com.GTasteriX.demo.Entity.Enquiry;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

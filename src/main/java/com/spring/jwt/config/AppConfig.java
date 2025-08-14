@@ -142,6 +142,7 @@ public class AppConfig {
                 .requestMatchers("/b2bConfirm/**").permitAll()
                 .requestMatchers("/premiumCars/**").permitAll()
                 .requestMatchers("/PremiumCarUploadFile/**").permitAll()
+                .requestMatchers("/enquiry/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationManager(manager)
