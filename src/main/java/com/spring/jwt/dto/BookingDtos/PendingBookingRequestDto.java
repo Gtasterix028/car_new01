@@ -46,7 +46,6 @@ public class PendingBookingRequestDto {
 
     private String registration;
 
-
     private String transmission;
 
     private int year;

@@ -21,8 +21,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/car")
-public class
-CarController {
+
+public class CarController {
 
     private final ICarRegister iCarRegister;
 

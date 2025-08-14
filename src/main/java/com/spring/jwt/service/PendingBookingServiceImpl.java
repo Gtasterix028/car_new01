@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class PendingBookingServiceImpl implements PendingBookingService {
 
     private final PendingBookingRepository pendingBookingRepository;
+
     private final CarRepo carRepository;
 
     private final UserProfileRepository userProfileRepository;
@@ -102,8 +103,6 @@ public class PendingBookingServiceImpl implements PendingBookingService {
 
         return listOfPendingBookingDto;
     }
-
-
 
 
     @Override

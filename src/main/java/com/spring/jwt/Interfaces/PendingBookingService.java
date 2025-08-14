@@ -9,13 +9,11 @@ public interface PendingBookingService {
 
     public PendingBookingRequestDto savePendingBooking(PendingBookingDTO pendingBookingDTO);
 
-
     public void deleteBooking(int id);
 
     public void statusUpdate(PendingBookingDTO pendingBookingDTO);
 
     public List<PendingBookingDTO> getAllPendingBookingWithPage(int PageNo);
-
 
     public List<PendingBookingDTO>getAllPendingBookingByUserId(int pageNo, int userId);
 
