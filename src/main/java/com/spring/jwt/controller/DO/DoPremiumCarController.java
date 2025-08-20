@@ -33,8 +33,10 @@ import java.util.Random;
 @RestController
 @RequestMapping("/PremiumCarUploadFile")
 @RequiredArgsConstructor
+
 public class DoPremiumCarController{
     private final PremiumCarIDocument iDocument;
+
     @Value("${do.CDN.No}")
     private String CDNNo;
     private final String uploadDir = "uploads";

@@ -17,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "premiumCar")
 public class PremiumCar {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "premiumCar", nullable = false)
@@ -106,7 +107,6 @@ public class PremiumCar {
 
     @Column(name = "transmission", length = 45)
     private String transmission;
-
 
     @Column(name = "year")
     private Integer year;

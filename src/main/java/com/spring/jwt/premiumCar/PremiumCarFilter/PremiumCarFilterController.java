@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/PremiumCarFilter")
+
 public class PremiumCarFilterController {
 
-    @RestController
-    @RequiredArgsConstructor
-    @RequestMapping("/cars")
-    public class FilterController {
-        @Autowired
-        private final PremiumCarFilterService filterService;
+      //  @Autowired
+        private  final PremiumCarFilterService filterService;
 
         @Autowired
         private UserService userService;
@@ -37,6 +37,7 @@ public class PremiumCarFilterController {
         @Autowired
         private ICarRegister iCarRegister;
 
+        @Autowired
         private PendingBookingService pendingBookingService;
 
 
@@ -287,4 +288,4 @@ public class PremiumCarFilterController {
         }
 
     }
-}
+
