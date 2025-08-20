@@ -147,6 +147,7 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         Optional<Long> lastId = premiumCarRepository.findMaxId();
         return lastId.map(id -> id + 1).orElse(1L);
     }
+
     @Override
     public PremiumCarDto createPremiumCar(PremiumCarDto premiumCarDto) {
         // 1. Check Dealer exists

@@ -1,5 +1,6 @@
 package  com.spring.jwt.enquiry;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,6 @@ public class EnquiryController {
         }
     }
 
-    // GET all
     @GetMapping
     public ResponseEntity<?> getAll() {
         try {
@@ -46,7 +46,6 @@ public class EnquiryController {
         }
     }
 
-    // UPDATE by ID
     @PutMapping("/{id}")
     public ResponseEntity<?> updateById(@PathVariable Integer id, @RequestBody EnquiryDTO enquiryDTO) {
         try {
@@ -57,7 +56,6 @@ public class EnquiryController {
         }
     }
 
-    // DELETE by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Integer id) {
         try {

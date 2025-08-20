@@ -17,6 +17,8 @@ public class PendingBookingDTO {
     private Integer userId;
     private String status;
     private int askingPrice;
+
+
     public PendingBookingDTO() {
     }
     public PendingBookingDTO(PendingBooking pendingBooking) {
