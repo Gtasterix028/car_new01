@@ -1,13 +1,14 @@
 package com.spring.jwt.premiumCar.PremiumCarFilter;
 
 import com.spring.jwt.dto.FilterDto;
+import com.spring.jwt.premiumCar.FilterDto1;
 import com.spring.jwt.premiumCar.PremiumCarDto;
 
 import java.util.List;
 
 public interface PremiumCarFilterService {
 
-    public List<PremiumCarDto> searchByFilter(FilterDto filterDto);
+    public List<PremiumCarDto> searchByFilter(FilterDto1 filterDto);
 
     List<PremiumCarDto> searchByFilterPage(FilterDto filterDto, int pageNo, int pageSize);
 

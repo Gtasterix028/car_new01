@@ -10,6 +10,7 @@ import com.spring.jwt.entity.Car;
 import com.spring.jwt.exception.CarNotFoundException;
 import com.spring.jwt.exception.PageNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.premiumCar.FilterDto1;
 import com.spring.jwt.premiumCar.PremiumCarDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/PremiumCarFilter")
-
 public class PremiumCarFilterController {
 
       //  @Autowired
@@ -50,8 +50,7 @@ public class PremiumCarFilterController {
                 @RequestParam(required = false) String brand,
                 @RequestParam(required = false) String model,
                 @RequestParam(required = false) String transmission,
-                @RequestParam(required = false) String fuelType,
-                @RequestParam(defaultValue = "normal") String carType) {
+                @RequestParam(required = false) String fuelType) {
 
             Integer convertedYear = null;
             try {
@@ -62,7 +61,7 @@ public class PremiumCarFilterController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseAllCarDto);
             }
 
-            FilterDto filterDto = new FilterDto(minPrice, maxPrice, area, brand, model, transmission, fuelType, convertedYear, carType);
+            FilterDto1 filterDto = new FilterDto1(minPrice, maxPrice, area, brand, model, transmission, fuelType, convertedYear);
 
             try {
                 List<PremiumCarDto> listOfPremiumCar = filterService.searchByFilter(filterDto);

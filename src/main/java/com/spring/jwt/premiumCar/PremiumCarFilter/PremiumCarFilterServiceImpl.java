@@ -4,6 +4,7 @@ import com.spring.jwt.dto.FilterDto;
 import com.spring.jwt.entity.Status;
 import com.spring.jwt.exception.CarNotFoundException;
 import com.spring.jwt.exception.PageNotFoundException;
+import com.spring.jwt.premiumCar.FilterDto1;
 import com.spring.jwt.premiumCar.PremiumCar;
 import com.spring.jwt.premiumCar.PremiumCarDto;
 import com.spring.jwt.premiumCar.PremiumCarRepository;
@@ -29,16 +30,16 @@ public class PremiumCarFilterServiceImpl implements PremiumCarFilterService {
     private DealerRepository dealerRepo;
 
     @Override
-    public List<PremiumCarDto> searchByFilter(FilterDto filterDto) {
+    public List<PremiumCarDto> searchByFilter(FilterDto1 filterDto) {
 
         Specification<PremiumCar> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (filterDto.getMinPrice() != null) {
-                predicates.add(criteriaBuilder.greaterThan(root.get("price"), filterDto.getMinPrice()));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), filterDto.getMinPrice()));
             }
             if (filterDto.getMaxPrice() != null) {
-                predicates.add(criteriaBuilder.lessThan(root.get("price"), filterDto.getMaxPrice()));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), filterDto.getMaxPrice()));
             }
             if (filterDto.getArea() != null && !filterDto.getArea().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get("area"), filterDto.getArea()));
@@ -58,33 +59,33 @@ public class PremiumCarFilterServiceImpl implements PremiumCarFilterService {
             if (filterDto.getFuelType() != null && !filterDto.getFuelType().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get("fuelType"), filterDto.getFuelType()));
             }
-            if (filterDto.getCarType() != null && !filterDto.getCarType().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("carType"), filterDto.getCarType()));
-            }
+
+            // ACTIVE or PENDING only
             Predicate statusPredicate = criteriaBuilder.or(
                     criteriaBuilder.equal(root.get("carStatus"), Status.ACTIVE),
                     criteriaBuilder.equal(root.get("carStatus"), Status.PENDING)
             );
             predicates.add(statusPredicate);
 
-            query.orderBy(criteriaBuilder.desc(root.get("id")));
-
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-        List<PremiumCar> carList = carRepo.findAll((Sort) spec);
+
+        // ✅ Correct usage with Specification + Sort
+        List<PremiumCar> carList = carRepo.findAll(spec, Sort.by(Sort.Direction.DESC, "premiumCarId"));
+
         if (carList.isEmpty()) {
             throw new PageNotFoundException("Page Not found");
         }
 
-        List<PremiumCarDto> listOfCarDto = new ArrayList<>();
-        for (PremiumCar car : carList) {
-            PremiumCarDto carDto = new PremiumCarDto(car);
-            carDto.setPremiumCarId(car.getPremiumCarId());
-            listOfCarDto.add(carDto);
-        }
-
-        return listOfCarDto;
+        return carList.stream()
+                .map(car -> {
+                    PremiumCarDto carDto = new PremiumCarDto(car);
+                    carDto.setPremiumCarId(car.getPremiumCarId());
+                    return carDto;
+                })
+                .collect(Collectors.toList());
     }
+
 
 
 
