@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -29,7 +30,6 @@ public class PremiumCarDto{
     private Boolean carInsurance;
     private String carInsuranceDate;
     private String carInsuranceType;
-    private Status carStatus;
     private boolean pendingApproval;
     private String city;
     private String color;
@@ -49,11 +49,48 @@ public class PremiumCarDto{
     private Integer dealerId;
     private long carPhotoId;
     private String mainCarId;
-    private String carType;
-
     private Set<Long> premiumCarPendingBookingId; // Representing PendingBooking as just IDs for simplification
 
 
     public PremiumCarDto(PremiumCar car) {
+        this.premiumCarId = car.getPremiumCarId();
+        this.airbag = car.getAirbag();
+        this.ABS = car.getABS();
+        this.buttonStart = car.getButtonStart();
+        this.sunroof = car.getSunroof();
+        this.childSafetyLocks = car.getChildSafetyLocks();
+        this.acFeature = car.getAcFeature();
+        this.musicFeature = car.getMusicFeature();
+        this.area = car.getArea();
+        this.variant = car.getVariant();
+        this.brand = car.getBrand();
+        this.carInsurance = car.getCarInsurance();
+        this.carInsuranceDate = car.getCarInsuranceDate();
+        this.carInsuranceType = car.getCarInsuranceType();
+        this.pendingApproval = car.isPendingApproval();
+        this.city = car.getCity();
+        this.color = car.getColor();
+        this.description = car.getDescription();
+        this.fuelType = car.getFuelType();
+        this.kmDriven = car.getKmDriven();
+        this.model = car.getModel();
+        this.ownerSerial = car.getOwnerSerial();
+        this.powerWindowFeature = car.getPowerWindowFeature();
+        this.price = car.getPrice();
+        this.rearParkingCameraFeature = car.getRearParkingCameraFeature();
+        this.registration = car.getRegistration();
+        this.title = car.getTitle();
+        this.transmission = car.getTransmission();
+        this.year = car.getYear();
+        this.date = car.getDate();
+        this.dealerId = car.getDealerId();
+        this.carPhotoId = car.getCarPhotoId();
+        this.mainCarId = car.getMainCarId();
+
+
+
     }
+
+
 }
+

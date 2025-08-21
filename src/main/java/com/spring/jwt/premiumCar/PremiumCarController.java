@@ -30,7 +30,7 @@ public class PremiumCarController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<?> getCarById(@PathVariable int id) {
         try {
             PremiumCarDto car = premiumCarService.getPremiumCarById(id);
