@@ -48,7 +48,6 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         dto.setCarInsurance(car.getCarInsurance());
         dto.setCarInsuranceDate(car.getCarInsuranceDate());
         dto.setCarInsuranceType(car.getCarInsuranceType());
-        dto.setCarStatus(car.getCarStatus());
         dto.setPendingApproval(car.isPendingApproval());
         dto.setCity(car.getCity());
         dto.setColor(car.getColor());
@@ -68,7 +67,7 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         dto.setDealerId(car.getDealerId());
         dto.setCarPhotoId(car.getCarPhotoId());
         dto.setMainCarId(car.getMainCarId());
-        dto.setCarType(car.getCarType());
+
 
         // ✅ Map pending booking IDs
         if (car.getPendingBookings() != null && !car.getPendingBookings().isEmpty()) {
@@ -98,7 +97,6 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         car.setCarInsurance(dto.getCarInsurance());
         car.setCarInsuranceDate(dto.getCarInsuranceDate());
         car.setCarInsuranceType(dto.getCarInsuranceType());
-        car.setCarStatus(dto.getCarStatus());
         car.setPendingApproval(dto.isPendingApproval());
         car.setCity(dto.getCity());
         car.setColor(dto.getColor());
@@ -118,7 +116,7 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         car.setDealerId(dto.getDealerId());
         car.setCarPhotoId(dto.getCarPhotoId());
         car.setMainCarId(dto.getMainCarId());
-        car.setCarType(dto.getCarType());
+
 
         // ✅ Set pendingBookings using booking IDs
         if (dto.getPremiumCarPendingBookingId() != null && !dto.getPremiumCarPendingBookingId().isEmpty()) {
@@ -160,9 +158,9 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         // 3. Generate mainCarId
         String mainCarId = generateMainCarId();
         premiumCar.setMainCarId(mainCarId);
+        premiumCar.setCarStatus(Status.ACTIVE);
 
-        // 4. Set carType from DTO itself
-        premiumCar.setCarType(premiumCarDto.getCarType());
+
 
         // 5. Save to DB
         premiumCar = premiumCarRepository.save(premiumCar);
@@ -198,7 +196,6 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         if (dto.getModel() != null) existing.setModel(dto.getModel());
         if (dto.getPrice() != null) existing.setPrice(dto.getPrice());
         if (dto.getDescription() != null) existing.setDescription(dto.getDescription());
-        if (dto.getCarStatus() != null) existing.setCarStatus(dto.getCarStatus());
         if (dto.getAirbag() != null) existing.setAirbag(dto.getAirbag());
         if (dto.getABS() != null) existing.setABS(dto.getABS());
         if (dto.getButtonStart() != null) existing.setButtonStart(dto.getButtonStart());
@@ -224,7 +221,7 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         if (dto.getYear() != null) existing.setYear(dto.getYear());
         if (dto.getDate() != null) existing.setDate(dto.getDate());
         if (dto.getDealerId() != null) existing.setDealerId(dto.getDealerId());
-        if (dto.getCarType() != null) existing.setCarType(dto.getCarType());
+
 
         // Boolean primitive field — check if DTO wants to override it
         existing.setPendingApproval(dto.isPendingApproval()); // optional: wrap in logic if needed

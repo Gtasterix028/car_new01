@@ -10,7 +10,7 @@ public interface PremiumCarFilterService {
 
     public List<PremiumCarDto> searchByFilter(FilterDto1 filterDto);
 
-    List<PremiumCarDto> searchByFilterPage(FilterDto filterDto, int pageNo, int pageSize);
+    List<PremiumCarDto> searchByFilterPage(FilterDto1 filterDto, int pageNo, int pageSize);
 
     public List<PremiumCarDto> getAllCarsWithPages(int PageNo,int pageSize);
 

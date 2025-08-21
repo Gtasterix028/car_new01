@@ -4,7 +4,6 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @ToString
 public class FilterDto1 {
@@ -15,7 +14,7 @@ public class FilterDto1 {
     private String model;
     private String transmission;
     private String fuelType;
-    private int year;
+    private Integer year;
 
     public FilterDto1(Integer minPrice, Integer maxPrice, String area, String brand, String model, String transmission, String fuelType, Integer year) {
         this.minPrice = minPrice;
