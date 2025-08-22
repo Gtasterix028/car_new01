@@ -48,20 +48,20 @@ public class PremiumCarFilterController {
                 @RequestParam(required = false) Integer minPrice,
                 @RequestParam(required = false) Integer maxPrice,
                 @RequestParam(required = false) String area,
-                @RequestParam(required = false) String year,
+//                @RequestParam(required = false) String year,
                 @RequestParam(required = false) String brand,
                 @RequestParam(required = false) String model,
                 @RequestParam(required = false) String transmission,
                 @RequestParam(required = false) String fuelType) {
 
             Integer convertedYear = null;
-            try {
-                convertedYear = (year != null && !year.isEmpty()) ? Integer.valueOf(year) : null;
-            } catch (NumberFormatException e) {
-                ResponseAllCarDto responseAllCarDto = new ResponseAllCarDto("unsuccess");
-                responseAllCarDto.setException("Invalid year format");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseAllCarDto);
-            }
+//            try {
+//                convertedYear = (year != null && !year.isEmpty()) ? Integer.valueOf(year) : null;
+//            } catch (NumberFormatException e) {
+//                ResponseAllCarDto responseAllCarDto = new ResponseAllCarDto("unsuccess");
+//                responseAllCarDto.setException("Invalid year format");
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseAllCarDto);
+//            }
 
             FilterDto1 filterDto = new FilterDto1(minPrice, maxPrice, area, brand, model, transmission, fuelType, convertedYear);
 
