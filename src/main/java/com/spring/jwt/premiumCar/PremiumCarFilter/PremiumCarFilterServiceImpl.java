@@ -66,14 +66,14 @@ public class PremiumCarFilterServiceImpl implements PremiumCarFilterService {
                     criteriaBuilder.equal(root.get("carStatus"), Status.ACTIVE)
             );
             predicates.add(statusPredicate);
-
+            query.orderBy(criteriaBuilder.desc(root.get("premiumCarId")));
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
 
         List<PremiumCar> carList = carRepo.findAll(spec, Sort.by(Sort.Direction.DESC, "premiumCarId"));
 
         if (carList.isEmpty()) {
-            throw new PageNotFoundException("Page Not found");
+            throw new PageNotFoundException("car found");
         }
 
         return carList.stream()
