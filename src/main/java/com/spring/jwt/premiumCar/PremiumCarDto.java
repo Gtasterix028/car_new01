@@ -51,7 +51,6 @@ public class PremiumCarDto{
     private String mainCarId;
     private Set<Long> premiumCarPendingBookingId; // Representing PendingBooking as just IDs for simplification
 
-
     public PremiumCarDto(PremiumCar car) {
         this.premiumCarId = car.getPremiumCarId();
         this.airbag = car.getAirbag();

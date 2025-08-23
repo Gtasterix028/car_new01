@@ -14,7 +14,6 @@ import com.spring.jwt.premiumCar.FilterDto1;
 import com.spring.jwt.premiumCar.PremiumCarDto;
 import com.spring.jwt.premiumCar.ResponseAllCarDto1;
 import jakarta.servlet.http.HttpServletRequest;
-import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

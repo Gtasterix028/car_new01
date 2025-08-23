@@ -20,7 +20,7 @@ public class PremiumCarController {
     public ResponseEntity<ResponseDto> registerCar(@RequestBody PremiumCarDto premiumCarDto) {
         try {
             PremiumCarDto createdCar = premiumCarService.createPremiumCar(premiumCarDto);
-            return ResponseEntity.ok(new ResponseDto("success", "Car registered with MainCarId: " + createdCar.getMainCarId()));
+            return ResponseEntity.ok(new ResponseDto("success", "Car registered with MainCarId: " + createdCar.getMainCarId(), createdCar.getPremiumCarId()));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseDto("unsuccess", ex.getMessage()));
