@@ -161,7 +161,6 @@ public class PremiumCarServiceImpl implements PremiumCarService {
         premiumCar.setCarStatus(Status.ACTIVE);
 
 
-
         // 5. Save to DB
         premiumCar = premiumCarRepository.save(premiumCar);
 

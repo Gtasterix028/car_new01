@@ -1,5 +1,6 @@
 package com.spring.jwt.premiumCar;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spring.jwt.entity.Status;
 import com.spring.jwt.premiumCar.PremiumCarPendingBooking.PremiumCarPendingBooking;
 import jakarta.persistence.*;
@@ -127,5 +128,6 @@ public class PremiumCar {
 
     @OneToMany(mappedBy = "premiumCarCar")
     private Set<PremiumCarPendingBooking> pendingBookings = new LinkedHashSet<>();
+
 
 }
