@@ -17,16 +17,16 @@ public class PremiumCarController {
     private PremiumCarService premiumCarService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto> registerCar(@RequestBody PremiumCarDto premiumCarDto) {
+    public ResponseEntity<PremiumCarResponseDTO> registerCar(@RequestBody PremiumCarDto premiumCarDto) {
         try {
             PremiumCarDto createdCar = premiumCarService.createPremiumCar(premiumCarDto);
-            return ResponseEntity.ok(new ResponseDto("success", "Car registered with MainCarId: " + createdCar.getMainCarId(), createdCar.getPremiumCarId()));
+            return ResponseEntity.ok(new PremiumCarResponseDTO("success", "Car registered with MainCarId: " + createdCar.getMainCarId(), createdCar.getPremiumCarId()));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDto("unsuccess", ex.getMessage()));
+                    .body(new PremiumCarResponseDTO("unsuccess", ex.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto("error", "Failed to register car"));
+                    .body(new PremiumCarResponseDTO("error", "Failed to register car"));
         }
     }
 
