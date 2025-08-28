@@ -82,6 +82,10 @@ public interface CarRepo extends JpaRepository<Car, Integer>, JpaSpecificationEx
     Page<Car> findByCarStatusInAndCarTypeOrderByIdDesc(List<Status> statuses, String carType, Pageable pageable);
 
     List<Car> findTop4ByOrderByIdDesc();
+
+    @Query("SELECT COUNT(c) FROM Car c")
+    long countAllCars() ;
+
 }
 
 
