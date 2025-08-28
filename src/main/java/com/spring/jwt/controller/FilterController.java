@@ -116,6 +116,8 @@ public class FilterController {
         } catch (PageNotFoundException pageNotFoundException) {
             ResponseAllCarDto responseAllCarDto = new ResponseAllCarDto("unsuccess");
             responseAllCarDto.setException("Page not found");
+            long totalCars = iCarRegister.countAllCars(); // fetch total cars count from service or repo
+            responseAllCarDto.setTotalCars(totalCars);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseAllCarDto);
         } catch (Exception e) {
             ResponseAllCarDto responseAllCarDto = new ResponseAllCarDto("unsuccess");
