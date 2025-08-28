@@ -42,4 +42,6 @@ public interface ICarRegister {
 
 
     public int getCarCountByStatusAndDealer(Status carStatus, int dealerId, String carType);
+    public long countAllCars() ;
+
 }

@@ -74,8 +74,8 @@ public class CarRegisterImp implements ICarRegister {
 
         // Set the carType from request parameter
         car.setCarType(carType);
-
         // Save the car entity
+
         car = carRepo.save(car);
         return car.getId();
     }
@@ -394,6 +394,12 @@ public class CarRegisterImp implements ICarRegister {
     public int getCarCountByStatusAndDealer(Status carStatus, int dealerId, String carType) {
         return carRepo.countByCarStatusAndDealerIdAndCarType(carStatus, dealerId,carType);
     }
+
+    @Override
+    public long countAllCars() {
+        return carRepo.count();
+    }
+
     @Override
     public Page<CarDto> getAllCarsWithCarTypeandPage(int pageNo, int pageSize, String carType) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
