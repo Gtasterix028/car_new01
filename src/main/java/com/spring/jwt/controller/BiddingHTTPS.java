@@ -125,4 +125,23 @@ public class BiddingHTTPS {
             return new ResponseDto("error", e.getMessage());
         }
     }
+
+
+        @DeleteMapping("/deleteAll")
+        public ResponseDto deleteAllBiddingData(@RequestParam(required = false) String delete) {
+            try {
+                // Verify the static key before deletion
+                if (!"1010".equals(delete)) {
+                    return new ResponseDto("Failed", "Invalid delete key provided", null);
+                }
+
+                // Proceed only if key matches
+                bidCarsService.deleteallok();
+
+                return new ResponseDto("Success", "All bidding data deleted successfully", null);
+            } catch (Exception e) {
+                return new ResponseDto("Failed", e.getMessage(), null);
+            }
+        }
+
 }

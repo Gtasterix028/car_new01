@@ -38,10 +38,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.setSendBufferSizeLimit(3 * 512 * 1024); // default : 512 * 1024
     }
 
-    @Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
-    }
+//    @Bean
+//    public ServerEndpointExporter serverEndpointExporter() {
+//        return new ServerEndpointExporter();
+//    }
 }
 
 

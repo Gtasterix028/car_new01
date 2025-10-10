@@ -15,4 +15,6 @@ public interface BidCarsService {
     public List<BidCarsDTO> getByUserId(Integer userId);
 
     BidCarsDTO getbyBidId(Integer beadingCarId);
+
+    public void deleteallok();
 }
