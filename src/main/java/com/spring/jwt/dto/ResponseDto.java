@@ -20,5 +20,6 @@ public class ResponseDto {
     }
 
 
-
+    public ResponseDto(String failed, String message, Object o) {
+    }
 }

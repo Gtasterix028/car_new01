@@ -46,6 +46,8 @@ public class BidCarsServiceImpl implements BidCarsService {
 
     private final ThreadPoolTaskScheduler taskScheduler;
 
+    private final BiddingTImerRepo biddingTimerRepo;
+
     private ScheduledFuture<?> scheduledFuture;
 
     private static final Logger log = LoggerFactory.getLogger(BidCarsServiceImpl.class);
@@ -295,6 +297,21 @@ public class BidCarsServiceImpl implements BidCarsService {
             return carsDTO;
         }else{
             throw new RuntimeException("Car Not Found");
+        }
+    }
+
+    @Override
+    public void deleteallok() {
+
+        try {
+            // Delete from dependent/secondary table first (BiddingTimer)
+            biddingTimerRepo.deleteAll();
+
+            // Then delete from main table (BidCars)
+            bidCarsRepo.deleteAll();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error while deleting bidding data: " + e.getMessage());
         }
     }
 
