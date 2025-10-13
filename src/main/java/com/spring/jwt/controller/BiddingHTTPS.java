@@ -127,6 +127,58 @@ public class BiddingHTTPS {
     }
 
 
+    @PostMapping("/placeBidHttp")
+    public ResponseDto placeBidHttp(@RequestBody PlacedBidDTO placedBidDTO) {
+        try {
+            logger.info("Received bid: {}", placedBidDTO);
+
+            Optional<BidCars> bidCarOpt = bidCarsRepo.findById(placedBidDTO.getBidCarId());
+            if (bidCarOpt.isPresent()) {
+                BidCars bidCar = bidCarOpt.get();
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime closingTime = bidCar.getClosingTime();
+                System.out.println("Current Time: " + now);
+                System.out.println("Closing Time: " + closingTime);
+
+                if (closingTime.isBefore(now)) {
+                    return new ResponseDto("error", "Bidding is over. No more bids can be placed.");
+                }
+
+                String result = placedBidService.placeBid(placedBidDTO, placedBidDTO.getBidCarId());
+
+                if (closingTime.isAfter(now) && closingTime.minusMinutes(2).isBefore(now)) {
+                    System.out.println("Bid placed within the last 2 minutes. Extending closing time.");
+                    bidCar.setClosingTime(closingTime.plusMinutes(2));
+                    bidCarsRepo.save(bidCar);
+
+                    bidCarsService.scheduleBidProcessing(bidCar);
+
+                    System.err.println("Updated Closing Time: " + bidCar.getClosingTime());
+                } else {
+                    System.err.println("Bid not placed within the last 2 minutes. No extension needed.");
+                }
+                List<BidCarsDTO> liveCars = beadingCarService.getAllLiveCars();
+
+
+
+                List<PlacedBidDTO> topThreeBids = placedBidService.getTopThree(placedBidDTO.getBidCarId());
+
+
+                PlacedBidDTO topBid = placedBidService.getTopBid(placedBidDTO.getBidCarId());
+
+
+                return new ResponseDto("success", result);     } else {
+                System.err.println("BidCar not found with ID: " + placedBidDTO.getBidCarId());
+                return new ResponseDto("error", "BidCar not found with ID: " + placedBidDTO.getBidCarId());
+            }
+        } catch (BidAmountLessException | UserNotFoundExceptions | BidForSelfAuctionException |
+                 InsufficientBalanceException e) {
+            logger.error("Error placing bid: {}", e.getMessage());
+            return new ResponseDto("error", e.getMessage());
+        }
+    }
+
+
         @DeleteMapping("/deleteAll")
         public ResponseDto deleteAllBiddingData(@RequestParam(required = false) String delete) {
             try {
