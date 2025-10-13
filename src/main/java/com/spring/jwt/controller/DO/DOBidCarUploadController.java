@@ -27,7 +27,14 @@ import java.util.Map;
 @RequestMapping("/uploadFileBidCar")
 @RequiredArgsConstructor
 public class DOBidCarUploadController {
+
+    private final R2StorageService r2StorageService;
     private final IBidPhoto iDocument;
+    @Value("${cloudflare.r2.account-id}")
+    private String accountId;
+
+    @Value("${cloudflare.r2.bucket}")
+    private String bucketName;
     @Value("${do.CDN.No}")
     private String CDNNo;
     private final String uploadDir = "uploads";
@@ -63,81 +70,48 @@ public class DOBidCarUploadController {
 
     }
     @PostMapping("/add")
-    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file,@RequestParam String documentType, @RequestParam String doc,@RequestParam String doctype,@RequestParam String subtype,@RequestParam String comment,@RequestParam Integer beadingCarId) throws InvalidKeyException, NoSuchAlgorithmException {
+    public ResponseEntity<ResponceDto> uploadImage(
+            @RequestParam("image") MultipartFile file,
+            @RequestParam String documentType,
+            @RequestParam String doc,
+            @RequestParam String doctype,
+            @RequestParam String subtype,
+            @RequestParam String comment,
+            @RequestParam Integer beadingCarId) {
+
+        System.out.println("Uploading image for car ID: " + beadingCarId + ", size: " + file.getSize());
+
         try {
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            Path filePath = Paths.get(uploadDir, fileName);
+            // 1. Upload to R2 bucket
+            String key = r2StorageService.uploadFile(file);
 
+            // 2. Build public link (R2 public URL format)
+            String documentLink = "https://photos.caryanamindia.com/" + key;
 
-            if (!Files.exists(filePath.getParent())) {
-                Files.createDirectories(filePath.getParent());
-            }
+            // 3. Create DTO and populate all fields
+            BidCarDto documentDto = new BidCarDto();
+            documentDto.setComment(comment);
+            documentDto.setDoctype(doctype);
+            documentDto.setSubtype(subtype);
+            documentDto.setDoc(doc);
+            documentDto.setBeadingCarId(beadingCarId);
+            documentDto.setDocumentType(documentType);
+            documentDto.setDocumentLink(documentLink);
 
-            // Save the uploaded file to the specified directory
-            file.transferTo(filePath);
+            // 4. Save metadata in DB
+            String serviceResponse = iDocument.addDocument(documentDto);
 
-            byte[] imageBytes = file.getBytes();
-            Files.delete(filePath);
+            return ResponseEntity.ok(new ResponceDto("success", serviceResponse));
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-            Map<String, Object> payloadObject = new HashMap<>();
-            payloadObject.put("imageBytes", imageBytes);
-            payloadObject.put("contentType", file.getContentType());
-            payloadObject.put("contentLength", imageBytes.length);
-            String uniqueName = this.doService.generateRandomString(15) + fileName;
-            payloadObject.put("imageName", uniqueName);
-            if (uniqueName.isEmpty()) {
-                throw new RuntimeException("BidCarPhoto not found");
-            }
-            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(payloadObject, httpHeaders);
-            ResponseEntity<String> response = restTemplate.exchange(
-                    NODEJS_SERVER_URL + "/forward-image",
-                    HttpMethod.POST,
-                    requestEntity,
-                    String.class
-            );
-
-
-
-//            String arr[] = documentDto.split(",");
-
-            String serviceResponse = null;
-
-            if (!response.getBody().isEmpty()) {
-//                JSONArray jsonArray = new JSONArray(documentJSONArray);
-//                JSONObject jsonArray = new JSONObject(documentJSONArray);
-
-                BidCarDto documentDto = new BidCarDto();
-                documentDto.setComment(comment);
-                documentDto.setDoctype(doctype);
-                documentDto.setSubtype(subtype);
-                documentDto.setDoc(doc);
-                documentDto.setBeadingCarId(beadingCarId);
-                documentDto.setDocumentType(documentType);
-
-
-
-
-                documentDto.setDocumentLink(CDNNo + "/" + response.getBody());
-                serviceResponse = iDocument.addDocument(documentDto);
-            }
-
-
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponceDto("success", serviceResponse));
         } catch (RuntimeException e) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponceDto("unsuccess", String.valueOf(e)));
-
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponceDto("unsuccess", "Failed to upload image"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponceDto("unsuccess", e.getMessage()));
         } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponceDto("unsuccess", "Failed to upload image"));
-
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponceDto("unsuccess", "Failed to upload image: " + e.getMessage()));
         }
-
     }
+
     @DeleteMapping("/delete")
     private ResponseEntity<?> delete(@RequestParam Integer DocumentId) {
         try {
