@@ -53,6 +53,17 @@ public class BeadingCarController {
         }
     }
 
+    @GetMapping("getByBidCarId/{id}")
+    public ResponseEntity<?> getBeadingCarByIdAdd(@PathVariable("id") Integer bidCarId) {
+        try {
+            BeadingCarWithInsDto beadingCar = beadingCarService.getLiveCarById(bidCarId);
+            return ResponseEntity.status(HttpStatus.OK).body(beadingCar);
+        } catch (BeadingCarNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("error", "Beading car not found"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("error", "An error occurred while retrieving beading car"));
+        }
+    }
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<ResponseDto> deleteBeadingCar(@PathVariable("id") Integer beadingCarId) {

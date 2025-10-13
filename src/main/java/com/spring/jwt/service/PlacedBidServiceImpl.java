@@ -4,6 +4,7 @@ import com.spring.jwt.Interfaces.PlacedBidService;
 import com.spring.jwt.Wallet.Entity.WalletAccount;
 import com.spring.jwt.Wallet.Repo.AccountRepository;
 import com.spring.jwt.dto.BeedingDtos.PlacedBidDTO;
+import com.spring.jwt.dto.BidPriceDto;
 import com.spring.jwt.dto.BiddingTimerRequestDTO;
 import com.spring.jwt.dto.FinalBidDto;
 import com.spring.jwt.entity.*;
@@ -209,6 +210,29 @@ public class PlacedBidServiceImpl implements PlacedBidService {
             return basePriceDTO;
         }
     }
+    @Override
+    public BidPriceDto getTopBidPrice(Integer bidCarId) {
+        // Get highest bid
+        Optional<PlacedBid> topBidOptional = placedBidRepo.findTopByBidCarIdOrderByAmountDesc(bidCarId);
+
+        if (topBidOptional.isPresent()) {
+            PlacedBid topBid = topBidOptional.get();
+
+            // Only price and bidCarId
+            BidPriceDto topBidDTO = new BidPriceDto(topBid.getBidCarId(), topBid.getAmount());
+
+            return topBidDTO;
+
+        } else {
+            // If no bid yet, return base price
+            BidCars car = bidCarsRepo.findById(bidCarId)
+                    .orElseThrow(() -> new BidNotFoundExceptions("Car not found for ID: " + bidCarId));
+
+            BidPriceDto basePriceDTO = new BidPriceDto(car.getBeadingCarId(), car.getBasePrice());
+            return basePriceDTO;
+        }
+    }
+
 
     public void sendTopBidUpdate(PlacedBidDTO bid) {
         logger.info("Publishing top bid update: " + bid);

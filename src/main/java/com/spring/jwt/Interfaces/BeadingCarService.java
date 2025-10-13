@@ -35,4 +35,7 @@ public interface BeadingCarService {
     public BeadingCarWithInsDto getBCarByUniqueBeadingCarId(String uniqueBeadingCarId);
 
     BidCarsDTO getLiveCar(Integer bidingCarId);
+
+    BeadingCarWithInsDto getLiveCarById(Integer bidCarId);
+
 }
