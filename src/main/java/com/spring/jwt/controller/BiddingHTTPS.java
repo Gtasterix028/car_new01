@@ -126,6 +126,7 @@ public class BiddingHTTPS {
         }
     }
 
+
     @PostMapping("/placeBidHttp")
     public ResponseDto placeBidHttp(@RequestBody PlacedBidDTO placedBidDTO) {
         try {
