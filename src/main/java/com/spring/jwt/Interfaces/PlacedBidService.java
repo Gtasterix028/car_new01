@@ -1,7 +1,9 @@
 package com.spring.jwt.Interfaces;
 
 import com.spring.jwt.dto.BeedingDtos.PlacedBidDTO;
+import com.spring.jwt.dto.BidPriceDto;
 import com.spring.jwt.dto.FinalBidDto;
+
 import com.spring.jwt.entity.FinalBid;
 import com.spring.jwt.entity.PlacedBid;
 import com.spring.jwt.exception.BidAmountLessException;
@@ -31,4 +33,6 @@ public interface PlacedBidService {
     Page<FinalBidDto> getDealerAllBids(Integer buyerDealerId, int pageNo, int pageSize);
 
     ResponseEntity<FinalBidDto> getFinalbidById(Integer bidCarId);
+
+    public BidPriceDto getTopBidPrice(Integer bidCarId);
 }

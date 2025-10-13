@@ -8,6 +8,7 @@ import com.spring.jwt.entity.BidCars;
 import com.spring.jwt.exception.*;
 import com.spring.jwt.repository.BidCarsRepo;
 import com.spring.jwt.service.BidCarsServiceImpl;
+import com.spring.jwt.service.PlacedBidServiceImpl;
 import com.spring.jwt.utils.BaseResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class PlaceBidController {
     private final BiddingTimerService biddingTimerService;
 
     private final BidCarsServiceImpl bidCarsService;
+
+    private final PlacedBidServiceImpl placedBidServiceImpl;
 
     private static final Logger logger = LoggerFactory.getLogger(PlaceBidController.class);
 
@@ -121,10 +124,20 @@ public class PlaceBidController {
         }
     }
 
+
     @GetMapping("getFinalBidById")
     public ResponseEntity<?> getfinalbidById(final Integer bidCarId) {
         try {
             FinalBidDto finalBidDto = placedBidService.getFinalbidById(bidCarId).getBody();
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponceDto("success", finalBidDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponceDto("unsuccess", "Data Not Found for specified Id"));
+        }
+    }
+    @GetMapping("getliveValue")
+    public ResponseEntity<?> getfinalbidByIdLive(final Integer bidCarId) {
+        try {
+            BidPriceDto  finalBidDto = placedBidServiceImpl.getTopBidPrice(bidCarId);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponceDto("success", finalBidDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponceDto("unsuccess", "Data Not Found for specified Id"));
